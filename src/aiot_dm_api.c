@@ -458,6 +458,8 @@ static void _dm_recv_generic_reply_handler(void *handle, const aiot_mqtt_recv_t 
 }
 
 //接收线程Keenster20200614
+extern int gettask;
+extern char* newtask;
 static void _dm_recv_property_set_handler(void *handle, const aiot_mqtt_recv_t *msg, void *userdata){
     dm_handle_t *dm_handle = (dm_handle_t *)userdata;
     aiot_dm_recv_t recv;
@@ -478,9 +480,10 @@ static void _dm_recv_property_set_handler(void *handle, const aiot_mqtt_recv_t *
             _dm_get_topic_level(dm_handle->sysdep, msg->data.pub.topic, msg->data.pub.topic_len, 3, &recv.device_name) < 0) {
             break;     /* must be malloc failed */
         }
-        printf("payload=%s paylen=%d msgid=%ld params=%s palen=%d \n",(char *)msg->data.pub.payload,msg->data.pub.payload_len,recv.data.property_set.msg_id,
-               recv.data.property_set.params,
-               recv.data.property_set.params_len);
+        //输出获取到的信息
+        // printf("payload=%s paylen=%d msgid=%ld params=%s palen=%d \n",(char *)msg->data.pub.payload,msg->data.pub.payload_len,recv.data.property_set.msg_id,
+        //        recv.data.property_set.params,
+        //        recv.data.property_set.params_len);
         char* payload =(char *)msg->data.pub.payload;
         int paylen = msg->data.pub.payload_len;
         cJSON *json = cJSON_ParseWithLength(payload, paylen);
@@ -495,8 +498,8 @@ static void _dm_recv_property_set_handler(void *handle, const aiot_mqtt_recv_t *
         printf("data=%s\n",data);
 
         //输出任务信息
-
-
+        gettask=1;
+        newtask=data;
         if ((res = _dm_parse_alink_request((char *)msg->data.pub.payload, msg->data.pub.payload_len,
                                            &recv.data.property_set.msg_id,
                                            &recv.data.property_set.params,

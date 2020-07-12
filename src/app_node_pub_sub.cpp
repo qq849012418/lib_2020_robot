@@ -48,7 +48,9 @@ void Callback(const std_msgs::String& sub_msg)
     ROS_INFO("I heard %s", sub_msg.data.c_str());
     //TODO如果任务完成，向服务器发送消息
 }
-
+//接收app信号
+int gettask=0;
+char* newtask;
 /* 日志回调函数, SDK的日志会从这里输出 *///禁止输出
 int32_t demo_state_logcb(int32_t code, char *message)
 {
@@ -415,10 +417,16 @@ int main(int argc, char *argv[])
     ros::Rate loop_rate(1);
   while (n.ok()) {
     std_msgs::String pub_msg;
-    std::stringstream ss;
-    ss << "hello world" ;
-    pub_msg.data = ss.str();
-    ROS_INFO("New Task: %s", pub_msg.data.c_str());
+     if(gettask!=0){
+        gettask=0;
+        pub_msg.data = newtask;
+        ROS_INFO("New Task: %s", pub_msg.data.c_str());
+      }else{
+        std::stringstream ss;
+        ss << "hello world" ;
+        pub_msg.data = ss.str();
+        ROS_INFO("test: %s", pub_msg.data.c_str());
+      }
     pub.publish(pub_msg);
     ros::spinOnce();
     loop_rate.sleep();
