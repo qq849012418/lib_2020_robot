@@ -31,7 +31,7 @@
  *  虽然物联网平台接收TCP方式的连接, 但我们不推荐这样做, TLS是更安全的通信方式
  *
  */
-#define CORE_SYSDEP_MBEDTLS_ENABLED
+//#define CORE_SYSDEP_MBEDTLS_ENABLED
 
 #ifdef CORE_SYSDEP_MBEDTLS_ENABLED
     #include "mbedtls/net_sockets.h"
@@ -1248,21 +1248,21 @@ void core_sysdep_mutex_deinit(void **mutex)
     }
 }
 
-aiot_sysdep_portfile_t g_aiot_sysdep_portfile = {
-    core_sysdep_malloc,
-    core_sysdep_free,
-    core_sysdep_time,
-    core_sysdep_sleep,
-    core_sysdep_network_init,
-    core_sysdep_network_setopt,
-    core_sysdep_network_establish,
-    core_sysdep_network_recv,
-    core_sysdep_network_send,
-    core_sysdep_network_deinit,
-    core_sysdep_rand,
-    core_sysdep_mutex_init,
-    core_sysdep_mutex_lock,
-    core_sysdep_mutex_unlock,
-    core_sysdep_mutex_deinit,
-};
+// aiot_sysdep_portfile_t g_aiot_sysdep_portfile = {
+//     core_sysdep_malloc,
+//     core_sysdep_free,
+//     core_sysdep_time,
+//     core_sysdep_sleep,
+//     core_sysdep_network_init,
+//     core_sysdep_network_setopt,
+//     core_sysdep_network_establish,
+//     core_sysdep_network_recv,
+//     core_sysdep_network_send,
+//     core_sysdep_network_deinit,
+//     core_sysdep_rand,
+//     core_sysdep_mutex_init,
+//     core_sysdep_mutex_lock,
+//     core_sysdep_mutex_unlock,
+//     core_sysdep_mutex_deinit,
+// };
 

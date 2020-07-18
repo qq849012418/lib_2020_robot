@@ -1,0 +1,8 @@
+#part1: the goal message, to be sent by the client
+int32 goal_num
+---
+#part2: the result message, to be sent by the server upon completion
+bool finsh
+---
+#part3: the feedback message, to be sent by server during execution
+float32 complete_percent

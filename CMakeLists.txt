@@ -8,10 +8,9 @@ project(app_task_reciver)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  message_generation
-  message_runtime
+  actionlib_msgs
+  actionlib
   roscpp
-  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -62,17 +61,14 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(FILES
+  qushu.action
+)
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+generate_messages(DEPENDENCIES
+  actionlib_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -104,6 +100,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
+  CATKIN_DEPENDS
+  message_runtime
 #INCLUDE_DIRS include/app_task_reciver
 # LIBRARIES app_task_reciver
 #CATKIN_DEPENDS message_generation message_runtime roscpp std_msgs
@@ -117,6 +115,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
+  include ${catkin_INCLUDE_DIRS}
   include/app_task_reciver 
   src
 )
@@ -209,13 +208,24 @@ include_directories(
 # catkin_add_nosetests(test)
 file(GLOB_RECURSE data_model_SRC
     "src/*.h"
-    "src/*.cpp"
     "src/*.c"
 )
-add_executable(data_model
- ${data_model_SRC}
-)
-add_dependencies(data_model ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(data_model
-  ${catkin_LIBRARIES}
-)
+# add_executable(data_model
+#  ${data_model_SRC}
+#  src/app_node_pub_sub.cpp
+# )
+# add_dependencies(data_model ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# target_link_libraries(data_model
+#   ${catkin_LIBRARIES}
+# )
+
+add_executable(action_client 
+${data_model_SRC} 
+src/action_client_sample.cpp )
+add_dependencies(action_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries( action_client ${catkin_LIBRARIES})
+
+
+add_executable(action_server src/action_server_sample.cpp)
+target_link_libraries( action_server ${catkin_LIBRARIES})
+add_dependencies(action_server ${${PROJECT_NAME}_EXPORTED_TARGETS})
