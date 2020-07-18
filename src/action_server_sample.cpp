@@ -12,13 +12,13 @@ typedef actionlib::SimpleActionServer<app_task_reciver::qushuAction> Server;
  */
 void execute(const app_task_reciver::qushuGoalConstPtr& goal, Server* as)
 {
-    ros::Rate r(0.2); /* 设置运行频率，这里设置为1hz */
+    ros::Rate r(0.2); /* 设置运行频率，这里设置为0.2hz */
     app_task_reciver::qushuFeedback feedback;    /* 创建一个feedback对象 */
 
-    ROS_INFO("THE GOAL IS: %d", goal -> goal_num);
+    ROS_INFO("THE GOAL IS: [%s]", goal ->book_id.c_str());
 
     int count = 0;
-        for (; count <goal -> goal_num; ++count)
+        for (; count <100; count+=10)
         {
             feedback.complete_percent = count;
             as -> publishFeedback(feedback);

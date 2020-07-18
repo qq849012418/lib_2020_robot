@@ -490,16 +490,25 @@ static void _dm_recv_property_set_handler(void *handle, const aiot_mqtt_recv_t *
         cJSON *params;
         cJSON *deviceName;
         char *data;
+        char *code;
         params = cJSON_GetObjectItem(json, "params");
         deviceName=cJSON_GetObjectItem(json, "deviceName");
         char* appname = cJSON_GetStringValue(deviceName);
         printf("appname=%s\n",appname);
         data = cJSON_GetStringValue(cJSON_GetObjectItem(cJSON_GetObjectItem(params, "data"), "value"));
+        int j=0,k=0;
+        char c = '\\';
+        for(j=k=0;data[j]!='\0';j++)
+            if(data[j]!=c)
+                data[k++]=data[j];
+        data[k]='\0';
+        cJSON *datajson = cJSON_Parse(data);
+        code = cJSON_GetStringValue(cJSON_GetObjectItem(datajson,"code"));
         printf("data=%s\n",data);
-
+        printf("code=%s\n",code);
         //输出任务信息
         gettask=1;
-        newtask=data;
+        newtask=code;
         if ((res = _dm_parse_alink_request((char *)msg->data.pub.payload, msg->data.pub.payload_len,
                                            &recv.data.property_set.msg_id,
                                            &recv.data.property_set.params,

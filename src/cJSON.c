@@ -3072,3 +3072,17 @@ CJSON_PUBLIC(void) cJSON_free(void *object)
 {
     global_hooks.deallocate(object);
 }
+void printJson(cJSON * root)//以递归的方式打印json的最内层键值对
+{
+    for(int i=0; i<cJSON_GetArraySize(root); i++)   //遍历最外层json键值对
+    {
+        cJSON * item = cJSON_GetArrayItem(root, i);        
+        if(cJSON_Object == item->type)      //如果对应键的值仍为cJSON_Object就递归调用printJson
+            printJson(item);
+        else                                //值不为json对象就直接打印出键和值
+        {
+            printf("%s->", item->string);
+            printf("%s\n", cJSON_Print(item));
+        }
+    }
+}

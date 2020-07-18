@@ -286,6 +286,10 @@ CJSON_PUBLIC(char*) cJSON_SetValuestring(cJSON *object, const char *valuestring)
 CJSON_PUBLIC(void *) cJSON_malloc(size_t size);
 CJSON_PUBLIC(void) cJSON_free(void *object);
 
+//自定义
+void printJson(cJSON * root);//以递归的方式打印json的最内层键值对
+
+
 #ifdef __cplusplus
 }
 #endif

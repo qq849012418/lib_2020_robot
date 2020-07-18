@@ -260,7 +260,7 @@ typedef actionlib::SimpleActionClient<app_task_reciver::qushuAction> Client;
 void doneCd(const actionlib::SimpleClientGoalState& state, const app_task_reciver::qushuResultConstPtr& result)
 {
     ROS_INFO("DONE");
-    ros::shutdown();
+    //ros::shutdown();
 }
 
 /*
@@ -388,7 +388,7 @@ int main(int argc, char **argv)
    while(ros::ok){
          if(gettask!=0){
             gettask=0;
-            goal.goal_num = strlen(newtask);   /* 设置目标对象的值 */
+            goal.book_id = newtask;   /* 设置目标对象的值 */
              /* 发送目标，并且定义回调函数 */
             client.sendGoal(goal, &doneCd, &activeCd, &feedbackCb);
       }
