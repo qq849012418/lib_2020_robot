@@ -26,7 +26,9 @@ enum RoboState
     WORKING,
     ERROR
 };
-
+RoboState rbstate = SLEEP;
+float percent=0.0;
+int isFinished=0;
 /*******linkSDK部分********/
 /* 系统适配函数集合 */
 extern aiot_sysdep_portfile_t g_aiot_sysdep_portfile;
@@ -260,6 +262,7 @@ typedef actionlib::SimpleActionClient<app_task_reciver::qushuAction> Client;
 void doneCd(const actionlib::SimpleClientGoalState& state, const app_task_reciver::qushuResultConstPtr& result)
 {
     ROS_INFO("DONE");
+    isFinished=1;
     //ros::shutdown();
 }
 
@@ -277,6 +280,8 @@ void activeCd()
 void feedbackCb(const app_task_reciver::qushuFeedbackConstPtr& feedback)
 {
     ROS_INFO("THE NUMBER RIGHT NOM IS: %f", feedback -> complete_percent);
+    rbstate = WORKING;
+    percent = feedback -> complete_percent;
 }
 
 int main(int argc, char **argv)
@@ -289,7 +294,7 @@ int main(int argc, char **argv)
     char        host[100] = {0}; /* 用这个数组拼接设备连接的云平台站点全地址, 规则是 ${productKey}.iot-as-mqtt.cn-shanghai.aliyuncs.com */
     uint16_t    port = 443;      /* 无论设备是否使用TLS连接阿里云平台, 目的端口都是443 */
     aiot_sysdep_network_cred_t cred; /* 安全凭据结构体, 如果要用TLS, 这个结构体中配置CA证书等参数 */
-    RoboState state = SLEEP;
+
    char* current_task=NULL;
     /* TODO: 替换为自己设备的三元组 */
     char *product_key       = "a11Kek9VcMy";
@@ -369,8 +374,6 @@ int main(int argc, char **argv)
     }
 
     /* 主循环进入休眠 */
-    int count=0;
-    char params[1000]="";
 
     //ros初始化
     ros::init(argc, argv, "action_client_demo");
@@ -385,13 +388,35 @@ int main(int argc, char **argv)
     /* 创建一个目标对象 */
    app_task_reciver::qushuGoal goal;
     ros::Rate loop_rate(1);
+    int ticker=0;
+    int count=0;//开机使用次数
    while(ros::ok){
-         if(gettask!=0){
+     if(gettask!=0){
             gettask=0;
             goal.book_id = newtask;   /* 设置目标对象的值 */
              /* 发送目标，并且定义回调函数 */
             client.sendGoal(goal, &doneCd, &activeCd, &feedbackCb);
+            count++;
       }
+      if(ticker>=10){
+            /*给*/
+            char params[1000]="";
+            //机器人状态上报
+            if(rbstate==WORKING){
+                    sprintf(params,"{\"roboState\": %d, \"data\": \"percent=%f, task=%s\", \"usecount\": %d}", rbstate,percent, goal.book_id.c_str(), count);
+                    if(isFinished==1){
+                        isFinished=0;
+                        rbstate=SLEEP;
+                    }
+            }else{
+                    sprintf(params,"{\"roboState\": %d,  \"usecount\": %d}", rbstate, count);
+            }
+            
+            demo_send_property_post(dm_handle, params);
+            ticker=0;
+      }
+      ticker++;
+      bool met = loop_rate.sleep();
    }
    
 
