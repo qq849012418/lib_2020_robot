@@ -1,16 +1,16 @@
-#goal
+#goal 关键的目标索书号,若需要正确printf,需要加.c_str()
 
 string book_id
 
 ---
 
-#result
+#result 发送是否完成,目前默认一定能完成
 
 bool finish
 
 ---
 
-#feedback
+#feedback 包括当前状态 自定义文字 完成百分比,可灵活选用
 
 string state
 
