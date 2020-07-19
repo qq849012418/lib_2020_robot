@@ -38,7 +38,7 @@ action_server_sample.cpp 定义了server模块的模板
 
 ### 使用方法(需搭配app):
 
-将本文件夹添加到catkin_ws/src目录下
+将本项目clone到catkin_ws/src目录下 可修改名称为app_task_receiver便于与其他模块区分
 
 ###### 回到catkin_ws 文件夹下：
 ```shell
