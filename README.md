@@ -38,7 +38,7 @@ action_server_sample.cpp 定义了server模块的C++模板
 
  
 
-### 使用方法(需搭配App):
+### 使用方法(需搭配App - 下载地址 [https://jbox.sjtu.edu.cn/l/XH2KQr](https://jbox.sjtu.edu.cn/l/XH2KQr)):
 
 将本项目clone到catkin_ws/src目录下 可修改名称为app_task_receiver便于与其他模块区分
 
