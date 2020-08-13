@@ -14,7 +14,7 @@
 
 #include <ros/ros.h>
 #include <actionlib/client/simple_action_client.h>
-#include "app_task_reciver/qushuAction.h"    /* 这个头文件每个人写的的名字都可能不同，package name/header file name.h */
+#include "app_task_receiver/qushuAction.h"    /* 这个头文件每个人写的的名字都可能不同，package name/header file name.h */
 #include <string>
 //接收app信号
 int gettask=0;
@@ -254,12 +254,12 @@ int32_t demo_send_event_post(void *dm_handle, char *event_id, char *params)
 }
 
 /********action定义部分********/
-typedef actionlib::SimpleActionClient<app_task_reciver::qushuAction> Client;
+typedef actionlib::SimpleActionClient<app_task_receiver::qushuAction> Client;
 
 /*
  *action完成时的回调函数，一次性
  */
-void doneCd(const actionlib::SimpleClientGoalState& state, const app_task_reciver::qushuResultConstPtr& result)
+void doneCd(const actionlib::SimpleClientGoalState& state, const app_task_receiver::qushuResultConstPtr& result)
 {
     ROS_INFO("DONE");
     isFinished=1;
@@ -277,7 +277,7 @@ void activeCd()
 /*
  *action收到反馈时的回调函数
  */
-void feedbackCb(const app_task_reciver::qushuFeedbackConstPtr& feedback)
+void feedbackCb(const app_task_receiver::qushuFeedbackConstPtr& feedback)
 {
     ROS_INFO("THE NUMBER RIGHT NOM IS: %f", feedback -> complete_percent);
     rbstate = WORKING;
@@ -386,7 +386,7 @@ int main(int argc, char **argv)
     ROS_INFO("ACTION SERVER START !");
 
     /* 创建一个目标对象 */
-   app_task_reciver::qushuGoal goal;
+   app_task_receiver::qushuGoal goal;
     ros::Rate loop_rate(1);
     int ticker=0;
     int count=0;//开机使用次数

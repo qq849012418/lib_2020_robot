@@ -34,14 +34,14 @@ class qushuServer:
 
   # 定义执行函数
   def execute(self, goal):
-      rate = rospy.Rate(0.2)
+      rate = rospy.Rate(0.2)#仅为示意,展示时可以调快
       #打印索书号
       rospy.loginfo('THE GOAL IS: [%s]'%goal.book_id)
       count=0
       while count<100:
             count+=10
             self._feedback.complete_percent = count
-            self.server.publish_feedback(self._feedback.complete_percent)
+            self.server.publish_feedback(self._feedback)
             rate.sleep()
       rospy.loginfo('COUNT DONE')
 

@@ -12,8 +12,8 @@ bool finish
 
 #feedback 包括当前状态 自定义文字 完成百分比,可灵活选用
 
-string state
+#string state
 
-string text
+#string text
 
 float32 complete_percent
