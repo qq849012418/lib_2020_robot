@@ -20,13 +20,15 @@ float32 complete_percent
 
 ```
 
-重要的源文件有三个:
+重要的源文件有4个:
 
-action_client_sample.cpp 包含部分阿里云sdk代码, 与阿里云建立网络通信的通道, 也定义了ros client端, 向机器人其他模块发送状态查询信息.
+##### action_server.py 该节点使用Python编写, 代码较简洁, 可以接收client发送的含索书号的action指令,其他节点可以参考移植
+
+##### action_client_sample.cpp 包含部分阿里云sdk代码, 与阿里云建立网络通信的通道, 也定义了ros client端, 向机器人其他模块发送状态查询信息.
 
 aiot_dm_api.c 物模型定义文件, 里面的 static void *_dm_*recv*_property_*set_handler 函数实现了接收到app取书任务后的解析与显示.
 
-action_server_sample.cpp 定义了server模块的模板
+action_server_sample.cpp 定义了server模块的C++模板
 
 废弃的源文件: app*_node_*pub_sub.cpp 7月初测试topic通信的部分代码
 
@@ -36,7 +38,7 @@ action_server_sample.cpp 定义了server模块的模板
 
  
 
-### 使用方法(需搭配app):
+### 使用方法(需搭配App):
 
 将本项目clone到catkin_ws/src目录下 可修改名称为app_task_receiver便于与其他模块区分
 
@@ -56,8 +58,22 @@ roscore
 
 终端2
 
+若使用c++
+
 ```
 rosrun app_task_receiver action_server 
+```
+
+若使用python
+
+```
+rosrun app_task_receiver action_server.py
+```
+
+若提示找不到文件或文件不可用,请在app_task_receiver/src目录下添加可执行:
+
+```shell
+sudo chmod +x action_server.py
 ```
 
 终端3

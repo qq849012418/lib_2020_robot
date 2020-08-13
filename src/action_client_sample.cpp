@@ -391,7 +391,7 @@ int main(int argc, char **argv)
     int ticker=0;
     int count=0;//开机使用次数
    while(ros::ok){
-     if(gettask!=0){
+     if(gettask!=0&&rbstate==SLEEP){
             gettask=0;
             goal.book_id = newtask;   /* 设置目标对象的值 */
              /* 发送目标，并且定义回调函数 */
@@ -402,13 +402,16 @@ int main(int argc, char **argv)
             /*给*/
             char params[1000]="";
             //机器人状态上报
+            
             if(rbstate==WORKING){
-                    sprintf(params,"{\"roboState\": %d, \"data\": \"percent=%f, task=%s\", \"usecount\": %d}", rbstate,percent, goal.book_id.c_str(), count);
+                    printf("working\n");
+                    sprintf(params,"{\"roboState\": %d, \"data\": \"%f,%s\", \"usecount\": %d}", rbstate,percent, goal.book_id.c_str(), count);
                     if(isFinished==1){
                         isFinished=0;
                         rbstate=SLEEP;
                     }
             }else{
+                    printf("not working\n");
                     sprintf(params,"{\"roboState\": %d,  \"usecount\": %d}", rbstate, count);
             }
             
