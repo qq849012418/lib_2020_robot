@@ -9,7 +9,7 @@
 
 #include "dm_private.h"
 #include <stdio.h>
-#include <cjson/cJSON.h>
+#include "cJSON.h"
 static int32_t _dm_send_property_post(dm_handle_t *handle, const char *topic, const aiot_dm_msg_t *msg);
 static int32_t _dm_send_event_post(dm_handle_t *handle, const char *topic, const aiot_dm_msg_t *msg);
 static int32_t _dm_send_property_set_reply(dm_handle_t *handle, const char *topic, const aiot_dm_msg_t *msg);

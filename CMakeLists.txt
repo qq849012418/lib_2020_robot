@@ -225,9 +225,3 @@ ${data_model_SRC}
 src/action_client_sample.cpp )
 add_dependencies(action_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries( action_client ${catkin_LIBRARIES})
-
-
-add_executable(action_server 
-src/action_server_sample.cpp)
-target_link_libraries( action_server ${catkin_LIBRARIES})
-add_dependencies(action_server ${${PROJECT_NAME}_EXPORTED_TARGETS})
