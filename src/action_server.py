@@ -9,9 +9,9 @@ import rospy
 import actionlib
 # 导入app_task_receiver中的msg,用于Goal、Feedback、Result的调用
 import app_task_receiver.msg
-# Twist用于控制Xbot进行移动
+# action&msg
 from app_task_receiver.msg import qushuAction
-
+from app_task_receiver.msg import cv
 # 建立Action服务器端
 class qushuServer:
   # 定义变量_feedback用于查看任务进度,result查看完成的指令个数
@@ -31,10 +31,11 @@ class qushuServer:
       self.server.start()
       # 显示提示信息
       rospy.loginfo('Start the server!')
+      #根据模块名, 修改Publisher 函数第一个参数
 
   # 定义执行函数
   def execute(self, goal):
-      rate = rospy.Rate(0.2)#仅为示意,展示时可以调快
+      rate = rospy.Rate(1)#仅为示意,展示时可以调快
       #打印索书号
       rospy.loginfo('THE GOAL IS: [%s]'%goal.book_id)
       count=0
@@ -42,17 +43,23 @@ class qushuServer:
             count+=10
             self._feedback.complete_percent = count
             self.server.publish_feedback(self._feedback)
+            #publish
+            x=1.0
+            y=2.0
+            state='working'
+            pub.publish(cv(state,x,y))
+            rospy.loginfo('cv_info_pub: x=%f ,y= %f, state=%s',x,y,state)
             rate.sleep()
       rospy.loginfo('COUNT DONE')
 
       self.server.set_succeeded(); 
 
-  
 
 # 主函数
 if __name__ == '__main__':
    # 初始化acion节点
    rospy.init_node('action_server_demo')
+   pub = rospy.Publisher('cv_info', cv , queue_size=10)
    # 建立action服务器
    server = qushuServer()
    # 等待关闭服务器
